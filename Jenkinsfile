@@ -33,6 +33,7 @@ pipeline {
 
         stage('Sonar-Report') {
             steps {
+                // This uses the credentials and server config set under 'MySonar' in Jenkins → Manage Jenkins → Configure System → SonarQube servers
                 withSonarQubeEnv('MySonar') {
                     sh '''
                         mvn sonar:sonar \
@@ -49,7 +50,7 @@ pipeline {
                     sh '''
                         curl -v -u $USERNAME:$PASSWORD \
                         --upload-file target/${ARTIFACT_ID}-${PROJECT_VERSION}.jar \
-                        http://localhost:8081/repository/maven-releases/${GROUP_ID.replaceAll('\\.', '/')}/${ARTIFACT_ID}/${PROJECT_VERSION}/${ARTIFACT_ID}-${PROJECT_VERSION}.jar
+                        http://localhost:8081/repository/maven-releases/$(echo ${GROUP_ID} | tr '.' '/')/${ARTIFACT_ID}/${PROJECT_VERSION}/${ARTIFACT_ID}-${PROJECT_VERSION}.jar
                     '''
                 }
             }
