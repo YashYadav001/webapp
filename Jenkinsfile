@@ -2,10 +2,6 @@ pipeline {
     agent {
         label 'master'
     }
-    environment {
-        // Optional if you want to reuse project key or set any other global values
-        SONAR_PROJECT_KEY = 'jenkins_project'
-    }
     stages {
         stage('Build') {
             steps {
@@ -26,7 +22,7 @@ pipeline {
 
         stage('Sonar-Report') {
             steps {
-                withSonarQubeEnv('sqa_7a96cc273050392e2fc873ca031ab499020fad55') {
+                withSonarQubeEnv('MySonar') {
                     sh '''
                         mvn sonar:sonar \
                             -Dsonar.projectKey=jenkins_project \
